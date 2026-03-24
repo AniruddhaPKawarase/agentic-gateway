@@ -1,0 +1,47 @@
+# =============================================================================
+#  Construction Intelligence Agent — systemd service
+# =============================================================================
+#  Port: 8003 | Prefix: /construction/
+#
+#  Install:
+#    sudo cp construction-agent.service /etc/systemd/system/
+#    sudo systemctl daemon-reload
+#    sudo systemctl enable construction-agent
+#    sudo systemctl start construction-agent
+# =============================================================================
+
+[Unit]
+Description=VCS Construction Intelligence Agent (Port 8003)
+After=network.target
+Wants=network-online.target
+
+[Service]
+Type=simple
+User=ubuntu
+Group=ubuntu
+
+# --- Paths (UPDATE THESE for your VM) ---
+WorkingDirectory=/home/ubuntu/PROD_SETUP/construction-intelligence-agent
+EnvironmentFile=/home/ubuntu/PROD_SETUP/construction-intelligence-agent/.env
+
+# --- Start command ---
+ExecStart=/home/ubuntu/PROD_SETUP/construction-intelligence-agent/venv/bin/python main.py
+
+# --- Restart policy ---
+Restart=always
+RestartSec=5
+StartLimitIntervalSec=60
+StartLimitBurst=5
+
+# --- Logging ---
+StandardOutput=journal
+StandardError=journal
+SyslogIdentifier=construction-agent
+
+# --- Resource limits ---
+LimitNOFILE=65536
+TimeoutStartSec=30
+TimeoutStopSec=15
+
+[Install]
+WantedBy=multi-user.target

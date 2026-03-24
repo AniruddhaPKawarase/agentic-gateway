@@ -1,0 +1,47 @@
+# =============================================================================
+#  RAG Agent — systemd service
+# =============================================================================
+#  Port: 8001 | Prefix: /rag/
+#
+#  Install:
+#    sudo cp rag-agent.service /etc/systemd/system/
+#    sudo systemctl daemon-reload
+#    sudo systemctl enable rag-agent
+#    sudo systemctl start rag-agent
+# =============================================================================
+
+[Unit]
+Description=VCS RAG Agent (Port 8001)
+After=network.target
+Wants=network-online.target
+
+[Service]
+Type=simple
+User=ubuntu
+Group=ubuntu
+
+# --- Paths (UPDATE THESE for your VM) ---
+WorkingDirectory=/home/ubuntu/PROD_SETUP/RAG_agent_VCS/RAG
+EnvironmentFile=/home/ubuntu/PROD_SETUP/RAG_agent_VCS/RAG/.env
+
+# --- Start command ---
+ExecStart=/home/ubuntu/PROD_SETUP/RAG_agent_VCS/RAG/venv/bin/python generate.py
+
+# --- Restart policy ---
+Restart=always
+RestartSec=5
+StartLimitIntervalSec=60
+StartLimitBurst=5
+
+# --- Logging ---
+StandardOutput=journal
+StandardError=journal
+SyslogIdentifier=rag-agent
+
+# --- Resource limits ---
+LimitNOFILE=65536
+TimeoutStartSec=30
+TimeoutStopSec=15
+
+[Install]
+WantedBy=multi-user.target

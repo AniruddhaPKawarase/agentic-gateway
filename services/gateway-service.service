@@ -1,0 +1,47 @@
+# =============================================================================
+#  Gateway Health Service — systemd service
+# =============================================================================
+#  Port: 8005 | Prefix: /gateway/
+#
+#  Install:
+#    sudo cp gateway-service.service /etc/systemd/system/
+#    sudo systemctl daemon-reload
+#    sudo systemctl enable gateway-service
+#    sudo systemctl start gateway-service
+# =============================================================================
+
+[Unit]
+Description=VCS Gateway Health Service (Port 8005)
+After=network.target
+Wants=network-online.target
+
+[Service]
+Type=simple
+User=ubuntu
+Group=ubuntu
+
+# --- Paths (UPDATE THESE for your VM) ---
+WorkingDirectory=/home/ubuntu/PROD_SETUP/gateway/health_service
+EnvironmentFile=/home/ubuntu/PROD_SETUP/gateway/health_service/.env
+
+# --- Start command ---
+ExecStart=/home/ubuntu/PROD_SETUP/gateway/health_service/venv/bin/python main.py
+
+# --- Restart policy ---
+Restart=always
+RestartSec=5
+StartLimitIntervalSec=60
+StartLimitBurst=5
+
+# --- Logging ---
+StandardOutput=journal
+StandardError=journal
+SyslogIdentifier=gateway-service
+
+# --- Resource limits ---
+LimitNOFILE=65536
+TimeoutStartSec=15
+TimeoutStopSec=10
+
+[Install]
+WantedBy=multi-user.target

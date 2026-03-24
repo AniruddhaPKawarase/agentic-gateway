@@ -1,0 +1,47 @@
+# =============================================================================
+#  SQL Intelligence Agent — systemd service
+# =============================================================================
+#  Port: 8002 | Prefix: /sql/
+#
+#  Install:
+#    sudo cp sql-agent.service /etc/systemd/system/
+#    sudo systemctl daemon-reload
+#    sudo systemctl enable sql-agent
+#    sudo systemctl start sql-agent
+# =============================================================================
+
+[Unit]
+Description=VCS SQL Intelligence Agent (Port 8002)
+After=network.target
+Wants=network-online.target
+
+[Service]
+Type=simple
+User=ubuntu
+Group=ubuntu
+
+# --- Paths (UPDATE THESE for your VM) ---
+WorkingDirectory=/home/ubuntu/PROD_SETUP/SQL-Intelligence-Agent
+EnvironmentFile=/home/ubuntu/PROD_SETUP/SQL-Intelligence-Agent/.env
+
+# --- Start command ---
+ExecStart=/home/ubuntu/PROD_SETUP/SQL-Intelligence-Agent/venv/bin/python -m api.main
+
+# --- Restart policy ---
+Restart=always
+RestartSec=5
+StartLimitIntervalSec=60
+StartLimitBurst=5
+
+# --- Logging ---
+StandardOutput=journal
+StandardError=journal
+SyslogIdentifier=sql-agent
+
+# --- Resource limits ---
+LimitNOFILE=65536
+TimeoutStartSec=30
+TimeoutStopSec=15
+
+[Install]
+WantedBy=multi-user.target

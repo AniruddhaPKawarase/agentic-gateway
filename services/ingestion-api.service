@@ -1,0 +1,47 @@
+# =============================================================================
+#  Ingestion API — systemd service
+# =============================================================================
+#  Port: 8004 | Prefix: /ingestion/
+#
+#  Install:
+#    sudo cp ingestion-api.service /etc/systemd/system/
+#    sudo systemctl daemon-reload
+#    sudo systemctl enable ingestion-api
+#    sudo systemctl start ingestion-api
+# =============================================================================
+
+[Unit]
+Description=VCS Ingestion API (Port 8004)
+After=network.target
+Wants=network-online.target
+
+[Service]
+Type=simple
+User=ubuntu
+Group=ubuntu
+
+# --- Paths (UPDATE THESE for your VM) ---
+WorkingDirectory=/home/ubuntu/PROD_SETUP/INGESTION_for_RAG_agent
+EnvironmentFile=/home/ubuntu/PROD_SETUP/INGESTION_for_RAG_agent/.env
+
+# --- Start command ---
+ExecStart=/home/ubuntu/PROD_SETUP/INGESTION_for_RAG_agent/venv/bin/python -m api.main
+
+# --- Restart policy ---
+Restart=always
+RestartSec=5
+StartLimitIntervalSec=60
+StartLimitBurst=5
+
+# --- Logging ---
+StandardOutput=journal
+StandardError=journal
+SyslogIdentifier=ingestion-api
+
+# --- Resource limits ---
+LimitNOFILE=65536
+TimeoutStartSec=60
+TimeoutStopSec=30
+
+[Install]
+WantedBy=multi-user.target
