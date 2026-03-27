@@ -21,11 +21,10 @@ User=ubuntu
 Group=ubuntu
 
 # --- Paths (UPDATE THESE for your VM) ---
-WorkingDirectory=/home/ubuntu/PROD_SETUP/gateway/health_service
-EnvironmentFile=/home/ubuntu/PROD_SETUP/gateway/health_service/.env
+WorkingDirectory=/home/ubuntu/vcsai/gateway/health_service
 
 # --- Start command ---
-ExecStart=/home/ubuntu/PROD_SETUP/gateway/health_service/venv/bin/python main.py
+ExecStart=/home/ubuntu/vcsai/venv/bin/uvicorn main:app --host 0.0.0.0 --port 8005 --workers 1
 
 # --- Restart policy ---
 Restart=always

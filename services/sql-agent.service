@@ -21,11 +21,11 @@ User=ubuntu
 Group=ubuntu
 
 # --- Paths (UPDATE THESE for your VM) ---
-WorkingDirectory=/home/ubuntu/PROD_SETUP/SQL-Intelligence-Agent
-EnvironmentFile=/home/ubuntu/PROD_SETUP/SQL-Intelligence-Agent/.env
+WorkingDirectory=/home/ubuntu/vcsai/SQL-Intelligence-Agent
+EnvironmentFile=/home/ubuntu/vcsai/SQL-Intelligence-Agent/.env
 
 # --- Start command ---
-ExecStart=/home/ubuntu/PROD_SETUP/SQL-Intelligence-Agent/venv/bin/python -m api.main
+ExecStart=/home/ubuntu/vcsai/venv/bin/python -m api.main
 
 # --- Restart policy ---
 Restart=always

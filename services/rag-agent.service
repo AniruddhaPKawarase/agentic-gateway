@@ -21,11 +21,11 @@ User=ubuntu
 Group=ubuntu
 
 # --- Paths (UPDATE THESE for your VM) ---
-WorkingDirectory=/home/ubuntu/PROD_SETUP/RAG_agent_VCS/RAG
-EnvironmentFile=/home/ubuntu/PROD_SETUP/RAG_agent_VCS/RAG/.env
+WorkingDirectory=/home/ubuntu/vcsai/RAG
+EnvironmentFile=/home/ubuntu/vcsai/RAG/.env
 
 # --- Start command ---
-ExecStart=/home/ubuntu/PROD_SETUP/RAG_agent_VCS/RAG/venv/bin/python generate.py
+ExecStart=/home/ubuntu/vcsai/venv/bin/python -m uvicorn generate:app --host 0.0.0.0 --port 8001 --workers 1
 
 # --- Restart policy ---
 Restart=always

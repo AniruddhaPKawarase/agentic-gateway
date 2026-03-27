@@ -21,11 +21,11 @@ User=ubuntu
 Group=ubuntu
 
 # --- Paths (UPDATE THESE for your VM) ---
-WorkingDirectory=/home/ubuntu/PROD_SETUP/INGESTION_for_RAG_agent
-EnvironmentFile=/home/ubuntu/PROD_SETUP/INGESTION_for_RAG_agent/.env
+WorkingDirectory=/home/ubuntu/vcsai/INGESTION_for_RAG_agent
+EnvironmentFile=/home/ubuntu/vcsai/INGESTION_for_RAG_agent/.env
 
 # --- Start command ---
-ExecStart=/home/ubuntu/PROD_SETUP/INGESTION_for_RAG_agent/venv/bin/python -m api.main
+ExecStart=/home/ubuntu/vcsai/venv/bin/python -m api.main
 
 # --- Restart policy ---
 Restart=always
